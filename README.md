@@ -1,5 +1,41 @@
 # DFX Playground
 
+## Denylist
+
+```shell
+dfx canister call \
+    z2rt2-eaaaa-aaaal-abcva-cai \
+    http_request \
+    --query \
+    --network https://icp-api.io \
+    --candid ./http_canister.did \
+    '(record {url = "/denylist.json"; method = "GET"; body = vec {}; headers = vec {}; certificate_version = opt 2})'
+```
+
+## Levi
+
+```shell
+dfx canister call \
+    em3jm-bqaaa-aaaar-qabxa-cai \
+    http_request \
+    --query \
+    --network https://icp-api.io \
+    '(record {url = "/"; method = "GET"; body = vec {}; headers = vec {}; certificate_version = opt 2})'
+```
+
+## Candid UI
+
+```shell
+dfx canister call \
+    a4gq6-oaaaa-aaaab-qaa4q-cai \
+    http_request \
+    --query \
+    --network https://icp-api.io \
+    --candid ./http_canister.did \
+    '(record {url = "/"; method = "GET"; body = vec {}; headers = vec {}; certificate_version = opt 2})'
+```
+
+
 ## Open Chat
 
 ```shell
@@ -76,6 +112,26 @@ dfx canister call \
     --network https://icp-api.io \
     --candid ./http_canister.did \
     '(record {url = "/yolo/123"; method = "GET"; body = vec {}; headers = vec {}; certificate_version = opt 2 })'
+```
+
+```shell
+dfx canister call \
+    onzmk-taaaa-aaaal-acw4a-cai \
+    http_request \
+    --query \
+    --network https://icp-api.io \
+    --candid ./http_canister.did \
+    '(record {url = "data/Mapping%20file.csv"; method = "GET"; body = vec {}; headers = vec {}; certificate_version = opt 2 })'
+```
+
+```shell
+dfx canister call \
+    nkzsw-gyaaa-aaaal-ada3a-cai \
+    http_request \
+    --query \
+    --network https://icp-api.io \
+    --candid ./http_canister.did \
+    '(record {url = "bon%20jour3/index.html"; method = "GET"; body = vec {}; headers = vec {}; certificate_version = opt 2 })'
 ```
 
 ## OpenFPL
