@@ -10,9 +10,9 @@ anyhow = "1.0.69"
 base64 = "0.21.0"
 flate2 = "1.0.25"
 hex = "0.4.3"
-ic-agent = "0.30.0"
-ic-utils = "0.30.0"
+ic-agent = "0.31.0"
+ic-utils = "0.31.0"
 sha2 = "0.10.6"
 tokio = { version = "1.25.0", features = ["full"] }
-ic-response-verification = { version = "2.0.1", features = ["debug"] }
-ic-http-certification = { version = "2.0.1" }
+ic-response-verification = { path = "../../response-verification/packages/ic-response-verification", features = ["debug"] }
+ic-http-certification = { path = "../../response-verification/packages/ic-http-certification" }

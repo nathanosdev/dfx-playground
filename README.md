@@ -92,6 +92,18 @@ dfx canister call \
     '(record {url = "/cyberowl"; method = "GET"; body = vec {}; headers = vec {}; })'
 ```
 
+## Dfinity docs
+
+```shell
+dfx canister call \
+    oa7fk-maaaa-aaaam-abgka-cai \
+    http_request \
+    --query \
+    --network https://icp-api.io \
+    --candid ./http_canister.did \
+    '(record {url = "/docs/current/references/cli-reference/dfx-upgrade"; method = "GET"; body = vec {}; headers = vec {}; certificate_version = opt 2 })'
+```
+
 ## Juno
 
 ```shell

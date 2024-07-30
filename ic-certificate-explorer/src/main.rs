@@ -8,6 +8,7 @@ use ic_utils::interfaces::http_request::HeaderField;
 use ic_utils::interfaces::HttpRequestCanister;
 use sha2::{Digest, Sha256};
 use std::{
+    borrow::Cow,
     io::Read,
     time::{SystemTime, UNIX_EPOCH},
 };
@@ -16,7 +17,7 @@ const MAX_CERT_TIME_OFFSET_NS: u128 = 300_000_000_000;
 const MAX_CHUNK_SIZE_TO_DECOMPRESS: usize = 1024;
 const MAX_CHUNKS_TO_DECOMPRESS: u64 = 10_240;
 
-pub fn decode_body(body: &Vec<u8>, encoding: &Option<&str>) -> Option<Vec<u8>> {
+fn decode_body(body: &Vec<u8>, encoding: &Option<&str>) -> Option<Vec<u8>> {
     return match encoding.as_deref() {
         Some("gzip") => body_from_decoder(GzDecoder::new(body.as_slice())),
         Some("deflate") => body_from_decoder(DeflateDecoder::new(body.as_slice())),
@@ -46,7 +47,7 @@ fn body_from_decoder<D: Read>(mut decoder: D) -> Option<Vec<u8>> {
     Some(decoded)
 }
 
-pub fn hash<T: AsRef<[u8]>>(data: T) -> String {
+fn hash<T: AsRef<[u8]>>(data: T) -> String {
     let mut hasher = Sha256::new();
     hasher.update(data);
     let data_hash = hasher.finalize();
@@ -54,7 +55,7 @@ pub fn hash<T: AsRef<[u8]>>(data: T) -> String {
     hex::encode(data_hash)
 }
 
-pub async fn create_agent(url: &str) -> Result<Agent> {
+async fn create_agent(url: &str) -> Result<Agent> {
     let transport = ReqwestTransport::create(url)?;
 
     let agent = Agent::builder().with_transport(transport).build()?;
@@ -74,12 +75,16 @@ fn get_current_time_in_ns() -> u128 {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    const REPLICA_ADDRESS: &str = "http://localhost:4943";
-    const CANISTER_ID: &str = "bkyz2-fmaaa-aaaaa-qaaaq-cai";
+    const REPLICA_ADDRESS: &str = "https://icp-api.io";
+    // const REPLICA_ADDRESS: &str = "http://localhost:4943";
+    const CANISTER_ID: &str = "h433y-uqaaa-aaaah-qdbja-cai";
 
-    const PATH: &str = "/todos/";
+    const PATH: &str = "https://s4ht6-cqaaa-aaaab-qaina-cai.icp0.io/test.jpg";
     const HTTP_METHOD: &str = "GET";
-    let headers: Vec<HeaderField> = vec![];
+    let headers: Vec<HeaderField> = vec![HeaderField(
+        Cow::Borrowed("accept-encoding"),
+        Cow::Borrowed("gzip, deflate, br"),
+    )];
 
     let agent = create_agent(REPLICA_ADDRESS).await?;
     let root_key = agent.read_root_key();
@@ -124,6 +129,14 @@ async fn main() -> Result<()> {
         root_key.as_slice(),
         2,
     );
+
+    // match result {
+    //     Ok(e) => {
+    //         println!("Verification successful");
+    //         println!("Verification version: {:?}", e.verification_version);
+    //     }
+    //     Err(e) => println!("Verification failed: {:?}", e),
+    // }
     println!("Verification result: {:?}", result);
     println!("Response: {:?}", response);
 
